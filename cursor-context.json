@@ -1,0 +1,131 @@
+{
+  "project": "Siddhant Vashisth Portfolio App",
+  "description": "A high-end, immersive Android portfolio app showcasing AR/VR/XR projects, skills, and achievements using modern UI/UX and AI-powered development via Cursor AI.",
+  "goals": [
+    "Deliver a professional Android portfolio with futuristic visuals and interactive elements.",
+    "Incorporate immersive AR/VR demos for projects using Unity and ARCore.",
+    "Leverage Cursor AI for code generation, bug fixing, documentation, and feature scaffolding.",
+    "Minimize manual coding—automate as much as possible via Cursor AI."
+  ],
+  "technologies": {
+    "frontend": [
+      "Jetpack Compose",
+      "Material 3",
+      "Kotlin Coroutines",
+      "Canvas-based custom animations"
+    ],
+    "backend": [
+      "Firebase Authentication",
+      "Firebase Firestore",
+      "Firebase Storage"
+    ],
+    "ar_vr": [
+      "Unity",
+      "ARCore",
+      "Vuforia",
+      "Blender (asset creation)"
+    ],
+    "ai_tools": [
+      "Cursor AI",
+      "GitHub Copilot (optional fallback)",
+      "Midjourney (for UI concept inspiration)"
+    ]
+  },
+  "features": {
+    "profile": {
+      "animated_intro": true,
+      "avatar_with_parallax": true,
+      "dark_light_mode_toggle": true
+    },
+    "projects": {
+      "3d_viewer": "Unity/ARCore embedded scenes",
+      "live_demo_support": true,
+      "tagging_and_filtering": true
+    },
+    "skills": {
+      "icons_with_progress": true,
+      "hover_animation": true
+    },
+    "about_me": {
+      "vertical_timeline": true,
+      "interactive_education_card": true
+    },
+    "contact": {
+      "firebase_form_submission": true,
+      "QR_code_download": true,
+      "resume_download": true
+    },
+    "admin_panel": {
+      "auth_protected": true,
+      "upload_projects": true,
+      "view_messages": true
+    }
+  },
+  "design": {
+    "theme": "Neo-Cyber Minimalism",
+    "colors": {
+      "primary": "#00FFE7",
+      "secondary": "#7F00FF",
+      "background": "#121212",
+      "text": "#FFFFFF",
+      "accent": "#FF00FF"
+    },
+    "typography": {
+      "header_font": "Poppins SemiBold",
+      "body_font": "Roboto",
+      "font_size_base": "16sp",
+      "font_size_title": "24sp"
+    },
+    "animations": {
+      "use_motion_layout": true,
+      "loading_glow_effects": true,
+      "fade_in_components": true
+    }
+  },
+  "ai_development_plan": {
+    "automate_with_cursor": [
+      "Generate Jetpack Compose screens (Home, About, Skills, Projects, Contact)",
+      "Integrate Firebase modules",
+      "Connect UI to Firebase Firestore (data-driven rendering)",
+      "Handle auth flow (login, admin-only access)",
+      "Generate cloud function stubs if needed",
+      "Produce and update README + in-code docs",
+      "Debug using YOLO mode for functional test coverage"
+    ],
+    "manual_tasks": [
+      "Generate and configure Unity AR/VR experiences",
+      "Create 3D assets in Blender",
+      "Export AR experiences into Android modules",
+      "Run emulator/device-specific ARCore validation",
+      "Design custom illustrations if not using Midjourney"
+    ]
+  },
+  "firebase": {
+    "auth": {
+      "providers": ["email/password"],
+      "admin_roles": true
+    },
+    "firestore": {
+      "collections": ["projects", "skills", "messages", "admin_users"]
+    },
+    "storage": {
+      "buckets": ["resume_pdfs", "project_media", "ar_assets"]
+    }
+  },
+  "unity_arcore_integration": {
+    "unity_version": "2022.3+",
+    "android_sdk": "API 31+",
+    "export_type": "Unity as Library",
+    "rendering_pipeline": "URP",
+    "tracking": ["image tracking", "plane detection", "light estimation"],
+    "used_in": ["Project Viewer", "AR Resume", "Interactive Demos"]
+  },
+  "deployment": {
+    "target_sdk": "Android 14",
+    "min_sdk": "Android 9 (API 28)",
+    "play_store_ready": true,
+    "release_type": "Portfolio Showcase",
+    "app_icon": "Generated via Figma or Midjourney",
+    "splash_screen": "Animated SVG or Lottie"
+  }
+}

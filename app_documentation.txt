@@ -1,0 +1,105 @@
+# Portfolio App Documentation
+
+## Project Overview
+This Android portfolio app is built using Kotlin and Jetpack Compose (Material3). It follows the MVVM architecture pattern and uses Koin for dependency injection. The app showcases the user's skills, projects, achievements, and AR experiences.
+
+## Technical Stack
+- **Language:** Kotlin
+- **UI Framework:** Jetpack Compose (Material3)
+- **Architecture:** MVVM
+- **Dependency Injection:** Koin
+- **Remote Data:** Firebase
+
+## Project Structure
+```
+app/
+├── src/
+│   ├── main/
+│   │   ├── java/com/sid/PortfolioAppNew/
+│   │   │   ├── data/
+│   │   │   │   ├── model/
+│   │   │   │   └── repository/
+│   │   │   ├── di/
+│   │   │   ├── navigation/
+│   │   │   │   ├── NavGraph.kt
+│   │   │   │   └── Screen.kt
+│   │   │   ├── ui/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── BottomNavigationBar.kt
+│   │   │   │   │   └── NeonText.kt
+│   │   │   │   ├── screens/
+│   │   │   │   │   ├── about/
+│   │   │   │   │   │   └── AboutScreen.kt
+│   │   │   │   │   ├── achievements/
+│   │   │   │   │   │   └── AchievementsScreen.kt
+│   │   │   │   │   ├── arx/
+│   │   │   │   │   │   └── ArxScreen.kt
+│   │   │   │   │   ├── projects/
+│   │   │   │   │   │   └── ProjectsScreen.kt
+│   │   │   │   │   └── skills/
+│   │   │   │   │       └── SkillsScreen.kt
+│   │   │   │   ├── theme/
+│   │   │   │   │   ├── Color.kt
+│   │   │   │   │   └── Theme.kt
+│   │   │   │   └── viewmodel/
+│   │   │   │       └── PortfolioViewModel.kt
+│   │   │   └── MainActivity.kt
+│   │   └── res/
+│   └── test/
+└── build.gradle
+```
+
+## Key Features
+- **Theme Management:** Dark and light themes with neon styling.
+- **Navigation:** Bottom navigation with 5 tabs: Achievements, Skills, ARX, Projects, and About Me.
+- **State Management:** MVVM architecture with ViewModel and StateFlow.
+
+## Recent Updates
+- Refactored navigation to a 5-tab modular structure.
+- Redesigned SkillsScreen and ProjectsScreen with modern UI components.
+- Fixed dependency injection issues and removed unused parameters.
+- Added neon styling and animations for a visually appealing experience.
+
+## Known Issues
+- Some parameters in composables are not used (e.g., `portfolioViewModel` in HomeScreen/SkillsScreen).
+- Deprecated Gradle features are used, which will make the build incompatible with Gradle 9.0.
+
+## Future Improvements
+- Implement AR features in the ARX screen.
+- Add more interactive elements and animations.
+- Optimize performance and reduce build warnings.
+
+## Dependencies
+- Jetpack Compose (Material3)
+- Koin (DI)
+- Firebase (Analytics, Auth, Firestore, Crashlytics)
+- DataStore
+- Lottie
+- Accompanist
+
+## Build Configuration
+- Minimum SDK: 21
+- Target SDK: 34
+- Compile SDK: 34
+- Kotlin version: 1.9.0
+- Gradle version: 8.11.1
+
+## Development Guidelines
+- Follow MVVM architecture
+- Use Kotlin Flow for state management
+- Implement proper error handling
+- Follow Material3 and custom neon/glassmorphic design guidelines
+- Use Koin for dependency injection
+- Maintain clean, modular code
+
+## Testing
+- Unit tests (planned)
+- UI tests (planned)
+- Integration tests (planned)
+
+## Deployment
+- Debug builds available
+- Release builds (planned)
+- Play Store deployment (planned)
+
+Note: This documentation is current as of the latest build and reflects all recent UI, navigation, and architectural changes. Update this file as the project evolves. 
