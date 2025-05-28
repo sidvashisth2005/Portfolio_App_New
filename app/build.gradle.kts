@@ -72,6 +72,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.foundation:foundation-layout")
+    implementation("androidx.compose.material:material")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -101,13 +103,13 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
-    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.32.0")
-    implementation("com.google.accompanist:accompanist-pager:0.32.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.32.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
-    implementation("com.google.accompanist:accompanist-placeholder-material:0.32.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager:0.34.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
 
     // Material Icons Extended
     implementation("androidx.compose.material:material-icons-extended:1.6.1")

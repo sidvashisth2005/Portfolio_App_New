@@ -69,7 +69,7 @@ fun NeonCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = NeonSurface
+            containerColor = DarkSurface
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -105,7 +105,7 @@ fun NeonProgressBar(
         progress = progress,
         modifier = modifier,
         color = NeonPrimary,
-        trackColor = NeonSurface
+        trackColor = DarkSurface
     )
 }
 

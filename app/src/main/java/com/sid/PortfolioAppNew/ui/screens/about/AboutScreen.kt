@@ -5,9 +5,11 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -35,6 +37,8 @@ import com.sid.PortfolioAppNew.ui.components.NeonTopAppBar
 import com.sid.PortfolioAppNew.ui.components.NeonCard
 import com.sid.PortfolioAppNew.ui.components.NeonButton
 import com.sid.PortfolioAppNew.ui.components.NeonChip
+import android.content.Intent
+import android.widget.Toast
 
 data class ContactInfo(
     val type: String,
@@ -125,27 +129,63 @@ fun AboutScreen(
                     val contactInfo = listOf(
                         ContactInfo(
                             type = "Email",
-                            value = "your.email@example.com",
+                            value = "siddhantvashisth05@gmail.com",
                             icon = { Icon(Icons.Default.Email, contentDescription = "Email") },
-                            action = { urlUtils.openEmail(context, "your.email@example.com") }
+                            action = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse("mailto:siddhantvashisth05@gmail.com")
+                                    }
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Could not open email client", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        ),
+                        ContactInfo(
+                            type = "Phone",
+                            value = "+91 8871592579",
+                            icon = { Icon(Icons.Default.Phone, contentDescription = "Phone") },
+                            action = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                                        data = Uri.parse("tel:+918871592579")
+                                    }
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Could not open phone dialer", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         ),
                         ContactInfo(
                             type = "LinkedIn",
-                            value = "linkedin.com/in/yourusername",
+                            value = "linkedin.com/in/siddhant-vashisth-04887b29b",
                             icon = { Icon(Icons.Default.Person, contentDescription = "LinkedIn") },
-                            action = { urlUtils.openUrl(context, "https://linkedin.com/in/yourusername") }
+                            action = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse("https://www.linkedin.com/in/siddhant-vashisth-04887b29b/")
+                                    }
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Could not open LinkedIn", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         ),
                         ContactInfo(
                             type = "GitHub",
-                            value = "github.com/yourusername",
+                            value = "github.com/sidvashisth2005",
                             icon = { Icon(Icons.Default.Code, contentDescription = "GitHub") },
-                            action = { urlUtils.openUrl(context, "https://github.com/yourusername") }
-                        ),
-                        ContactInfo(
-                            type = "Twitter",
-                            value = "@yourusername",
-                            icon = { Icon(Icons.Default.Chat, contentDescription = "Twitter") },
-                            action = { urlUtils.openUrl(context, "https://twitter.com/yourusername") }
+                            action = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse("https://github.com/sidvashisth2005")
+                                    }
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Could not open GitHub", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         )
                     )
                     
@@ -155,54 +195,10 @@ fun AboutScreen(
                 }
             }
             
-            // Skills Section
-            NeonCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "Key Skills",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    
-                    val skills = listOf(
-                        "Kotlin",
-                        "Jetpack Compose",
-                        "Android Architecture Components",
-                        "Material Design",
-                        "AR/VR Development",
-                        "Clean Architecture",
-                        "MVVM",
-                        "Coroutines",
-                        "Dependency Injection",
-                        "Unit Testing"
-                    )
-                    
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        skills.forEach { skill ->
-                            NeonChip(text = skill)
-                        }
-                    }
-                }
-            }
-            
             // Download Resume Button
             NeonButton(
                 text = "Download Resume",
-                onClick = { urlUtils.downloadResume(context, "https://example.com/resume.pdf") },
+                onClick = { urlUtils.downloadResume(context) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
@@ -213,10 +209,25 @@ fun AboutScreen(
 
 @Composable
 fun ContactItem(contact: ContactInfo) {
+    val context = LocalContext.current
+    var isPressed by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = true),
+                onClick = contact.action
+            )
+            .background(
+                color = if (isPressed) 
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                else 
+                    Color.Transparent,
+                shape = RoundedCornerShape(8.dp)
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
@@ -236,7 +247,10 @@ fun ContactItem(contact: ContactInfo) {
             Text(
                 text = contact.value,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                color = if (isPressed)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
     }

@@ -16,6 +16,9 @@ import com.airbnb.lottie.compose.*
 import com.sid.PortfolioAppNew.R
 import com.sid.PortfolioAppNew.ui.components.*
 import com.sid.PortfolioAppNew.ui.theme.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import java.util.*
 
 @Composable
 fun TimelineTab() {
@@ -54,7 +57,7 @@ fun GitHubPlaceholderTab() {
             verticalArrangement = Arrangement.Center
         ) {
             val composition = rememberLottieComposition(
-                LottieCompositionSpec.RawRes(R.raw.github_animation)
+                LottieCompositionSpec.RawRes(R.raw.github_placeholder)
             )
             
             LottieAnimation(
@@ -95,7 +98,7 @@ private fun TimelineCard(event: TimelineEvent) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = event.date,
+                text = event.date.toString(),
                 style = MaterialTheme.typography.labelMedium,
                 color = NeonPrimary
             )
@@ -122,19 +125,19 @@ private fun LinkedInPostCard(post: LinkedInPost) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = post.author.first().toString(),
+                        text = post.title.first().toString(),
                         color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = post.author,
+                        text = post.title,
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White
                     )
                     Text(
-                        text = post.date,
+                        text = post.timestamp.toString(),
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White.copy(alpha = 0.6f)
                     )
@@ -150,52 +153,57 @@ private fun LinkedInPostCard(post: LinkedInPost) {
     }
 }
 
-// Sample data classes
-data class TimelineEvent(
-    val title: String,
-    val description: String,
-    val date: String
-)
-
-data class LinkedInPost(
-    val author: String,
-    val content: String,
-    val date: String
-)
-
 // Sample data
 private val sampleTimelineEvents = listOf(
     TimelineEvent(
-        "Android Developer Certification",
-        "Completed Google's Android Developer Certification",
-        "March 2024"
+        id = "1",
+        title = "Android Developer Certification",
+        description = "Completed Google's Android Developer Certification",
+        date = Date(),
+        icon = null,
+        imageUrl = null
     ),
     TimelineEvent(
-        "Senior Developer Promotion",
-        "Promoted to Senior Android Developer",
-        "January 2024"
+        id = "2",
+        title = "Senior Developer Promotion",
+        description = "Promoted to Senior Android Developer",
+        date = Date(System.currentTimeMillis() - 86400000),
+        icon = null,
+        imageUrl = null
     ),
     TimelineEvent(
-        "Jetpack Compose Mastery",
-        "Completed advanced Jetpack Compose course",
-        "December 2023"
+        id = "3",
+        title = "Jetpack Compose Mastery",
+        description = "Completed advanced Jetpack Compose course",
+        date = Date(System.currentTimeMillis() - 172800000),
+        icon = null,
+        imageUrl = null
     )
 )
 
 private val sampleLinkedInPosts = listOf(
     LinkedInPost(
-        "SID",
-        "Excited to share my latest project using Jetpack Compose and Material 3!",
-        "2 hours ago"
+        id = "1",
+        title = "SID",
+        content = "Excited to share my latest project using Jetpack Compose and Material 3!",
+        timestamp = Date(),
+        mediaUrl = null,
+        mediaType = null
     ),
     LinkedInPost(
-        "SID",
-        "Just completed a challenging AR implementation for our portfolio app.",
-        "1 day ago"
+        id = "2",
+        title = "SID",
+        content = "Just completed a challenging AR implementation for our portfolio app.",
+        timestamp = Date(System.currentTimeMillis() - 86400000),
+        mediaUrl = null,
+        mediaType = null
     ),
     LinkedInPost(
-        "SID",
-        "Looking forward to speaking at the Android Developers Conference next month!",
-        "3 days ago"
+        id = "3",
+        title = "SID",
+        content = "Looking forward to speaking at the Android Developers Conference next month!",
+        timestamp = Date(System.currentTimeMillis() - 172800000),
+        mediaUrl = null,
+        mediaType = null
     )
 ) 

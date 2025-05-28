@@ -1,628 +1,140 @@
 # Portfolio App Documentation
 
-## Project Overview
-This Android portfolio app is built using Kotlin and Jetpack Compose (Material3). It follows the MVVM architecture pattern and uses Koin for dependency injection. The app showcases the user's skills, projects, achievements, and AR experiences with a modern, neon-themed UI and smooth animations.
+## Overview
+A modern Android portfolio application built with Jetpack Compose, showcasing professional experience, skills, and projects with a cyberpunk-inspired design.
 
-### Core Features
-- Modern Material3 design with custom neon theme
-- Smooth animations and transitions
-- Real-time social media integration
-- AR experiences showcase
-- Responsive and adaptive layouts
-- Offline-first architecture
-- Comprehensive error handling
-- Performance optimized
+## Features
 
-## Technical Stack
-### Frontend
-- **Language:** Kotlin 1.9.0
-- **UI Framework:** Jetpack Compose 1.5.0
-- **Material Design:** Material3
-- **Animations:** 
-  - Compose Animation APIs
-  - Lottie for complex animations
-  - Custom animation utilities
+### 1. Navigation
+- Bottom navigation with 4 main sections:
+  - Home (Timeline, LinkedIn, GitHub feeds)
+  - Projects
+  - About
+  - Settings
+- Smooth transitions and animations between screens
+- Custom neon-styled navigation components
+
+### 2. Home Screen
+- 3-tab pager layout:
+  - Timeline: Professional journey and milestones
+  - LinkedIn: Recent posts and activity
+  - GitHub: Repository highlights and contributions
+- Animated progress bars with neon effects
+- Interactive cards with hover effects
+
+### 3. Projects Screen
+- Grid layout of project cards
+- Project details include:
+  - Title and description
+  - Technologies used
+  - GitHub link
+  - Live demo link (if available)
+- Filtering and search capabilities
+- Project categories and tags
+
+### 4. About Screen
+- Professional bio and introduction
+- Contact information with clickable links:
+  - Email: siddhantvashisth05@gmail.com
+  - Phone: +91 8871592579
+  - LinkedIn: linkedin.com/in/siddhant-vashisth-04887b29b
+  - GitHub: github.com/sidvashisth2005
+- Skills section with interactive chips
+- Resume download functionality:
+  - PDF viewer integration
+  - Secure file sharing using FileProvider
+  - Automatic file management in workspace
+
+### 5. Settings Screen
+- Theme customization:
+  - Light/Dark mode
+  - Cyberpunk theme options
+  - Custom color schemes
+- Notification preferences
+- Language selection
+- Data synchronization options
+
+## Technical Implementation
 
 ### Architecture
-- **Pattern:** MVVM (Model-View-ViewModel)
-- **State Management:** 
-  - Kotlin Flow
-  - StateFlow for UI state
-  - SharedFlow for events
-- **Dependency Injection:** Koin 3.5.3
-- **Navigation:** Jetpack Navigation Compose
+- MVVM architecture pattern
+- Clean Architecture principles
+- Repository pattern for data management
+- Dependency Injection with Hilt
 
-### Backend & Data
-- **Remote Data:** Firebase
-  - Firestore for data storage
-  - Authentication
-  - Cloud Storage
-  - Analytics
-  - Crashlytics
-- **Local Storage:** 
-  - DataStore for preferences
-  - Room for offline cache
-- **Image Loading:** Coil 2.5.0
-- **Networking:** Retrofit + OkHttp
+### UI Components
+- Custom composables:
+  - NeonCard
+  - NeonButton
+  - NeonProgressBar
+  - NeonChip
+  - NeonTopAppBar
+- Material 3 design system
+- Custom animations and transitions
+- Responsive layouts
 
-### AR & Media
-- **AR Support:** ARCore 1.40.0
-- **Media Handling:**
-  - ExoPlayer for video
-  - Coil for images
-  - Lottie for animations
-
-### Testing
-- **Unit Testing:** JUnit 4.13.2
-- **UI Testing:** Espresso 3.5.1
-- **Compose Testing:** Compose UI Testing
-- **Mocking:** MockK
-
-## Project Structure
-```
-app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/sid/PortfolioAppNew/
-│   │   │   ├── data/
-│   │   │   │   ├── model/
-│   │   │   │   │   ├── Achievement.kt
-│   │   │   │   │   ├── Project.kt
-│   │   │   │   │   ├── Skill.kt
-│   │   │   │   │   └── SocialPost.kt
-│   │   │   │   └── repository/
-│   │   │   │       ├── AchievementRepository.kt
-│   │   │   │       ├── ProjectRepository.kt
-│   │   │   │       └── SocialRepository.kt
-│   │   │   ├── di/
-│   │   │   │   ├── AppModule.kt
-│   │   │   │   ├── NetworkModule.kt
-│   │   │   │   └── RepositoryModule.kt
-│   │   │   ├── utils/
-│   │   │   │   ├── Extensions.kt
-│   │   │   │   ├── Constants.kt
-│   │   │   │   └── ThemeUtils.kt
-│   │   │   ├── navigation/
-│   │   │   │   ├── NavGraph.kt
-│   │   │   │   └── Screen.kt
-│   │   │   ├── ui/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── BottomNavigationBar.kt
-│   │   │   │   │   ├── NeonText.kt
-│   │   │   │   │   ├── SkillProgressBar.kt
-│   │   │   │   │   ├── TimelineCard.kt
-│   │   │   │   │   └── ProjectCard.kt
-│   │   │   │   ├── screens/
-│   │   │   │   │   ├── home/
-│   │   │   │   │   │   ├── HomeScreen.kt
-│   │   │   │   │   │   ├── TimelineTab.kt
-│   │   │   │   │   │   ├── LinkedInTab.kt
-│   │   │   │   │   │   └── GitHubTab.kt
-│   │   │   │   │   ├── about/
-│   │   │   │   │   │   └── AboutScreen.kt
-│   │   │   │   │   ├── achievements/
-│   │   │   │   │   │   └── AchievementsScreen.kt
-│   │   │   │   │   ├── arx/
-│   │   │   │   │   │   └── ArxScreen.kt
-│   │   │   │   │   ├── projects/
-│   │   │   │   │   │   └── ProjectsScreen.kt
-│   │   │   │   │   └── skills/
-│   │   │   │   │       └── SkillsScreen.kt
-│   │   │   │   ├── theme/
-│   │   │   │   │   ├── Color.kt
-│   │   │   │   │   ├── Theme.kt
-│   │   │   │   │   └── Type.kt
-│   │   │   │   └── viewmodel/
-│   │   │   │       ├── HomeViewModel.kt
-│   │   │   │       ├── SkillsViewModel.kt
-│   │   │   │       └── ProjectsViewModel.kt
-│   │   │   ├── MainActivity.kt
-│   │   │   └── PortfolioApplication.kt
-│   │   └── res/
-│   │       ├── values/
-│   │       │   ├── colors.xml
-│   │       │   ├── strings.xml
-│   │       │   └── themes.xml
-│   │       ├── drawable/
-│   │       └── raw/
-│   └── test/
-│       ├── java/
-│       │   └── com/sid/PortfolioAppNew/
-│       │       ├── data/
-│       │       ├── repository/
-│       │       └── viewmodel/
-│       └── resources/
-└── build.gradle.kts
-```
-
-## Screen Features
-
-### 1. Home Screen (Tabbed Layout)
-#### Timeline Tab
-- **Layout:**
-  - Vertical timeline using LazyColumn
-  - Custom TimelineCard composable
-  - Date-based sorting with visual indicators
-- **Animations:**
-  - Entrance animations for each card
-  - Scale and fade transitions
-  - Interactive hover effects
-- **Data:**
-  - Achievement model with:
-    - Title
-    - Description
-    - Date
-    - Optional media
-    - Category
-  - Real-time updates from Firestore
-
-#### LinkedIn Feed Tab
-- **Features:**
-  - Real-time post fetching
-  - SwipeRefresh support
-  - Media content display
-  - Timestamp tracking
-- **UI Components:**
-  - PostCard composable
-  - Media preview
-  - Interaction buttons
-  - Loading states
-- **Data Integration:**
-  - LinkedIn API integration
-  - Local caching
-  - Offline support
-
-#### GitHub Activity Tab
-- **Current State:**
-  - Placeholder for future integration
-  - Lottie animation
-  - GitHub API preparation
-- **Planned Features:**
-  - Repository list
-  - Commit history
-  - Contribution graph
-  - Pull request tracking
-
-### 2. Skills Screen
-#### Programming Languages
-- **UI Components:**
-  - Animated progress bars
-  - Percentage-based skills
-  - Entrance animations
-- **Data Structure:**
-  ```kotlin
-  data class Skill(
-      val name: String,
-      val percentage: Int,
-      val category: SkillCategory,
-      val color: Color
-  )
-  ```
-- **Animations:**
-  - Progress bar animation
-  - Color transitions
-  - Entrance effects
-
-#### Tools & Platforms
-- **Layout:**
-  - Icon-based grid layout
-  - Glowing badges
-  - Interactive chips
-- **Features:**
-  - Category grouping
-  - Search functionality
-  - Filter options
-
-#### Expertise Areas
-- **Components:**
-  - Category-based grouping
-  - Visual indicators
-  - Hover effects
-- **Data:**
-  - Expertise levels
-  - Years of experience
-  - Project count
-
-#### Soft Skills & Languages
-- **UI Elements:**
-  - Glow badge design
-  - Proficiency indicators
-  - Animated transitions
-- **Categories:**
-  - Communication
-  - Leadership
-  - Problem Solving
-  - Languages
-
-### 3. ARX Screen
-#### Features
-- ARCore integration
-- Animated background
-- Future Unity integration
-- Lottie animations
-- 3D model viewer
-- Interactive elements
-
-#### Technical Implementation
-- AR session management
-- Scene rendering
-- Gesture handling
-- Performance optimization
-
-### 4. Projects Screen
-#### Components
-- Expandable project cards
-- Tech stack visualization
-- Screenshot gallery
-- External links
-- Animated transitions
-
-#### Project Card Structure
-```kotlin
-data class Project(
-    val id: String,
-    val title: String,
-    val description: String,
-    val techStack: List<String>,
-    val screenshots: List<String>,
-    val links: Map<String, String>,
-    val date: Date
-)
-```
-
-### 5. About Screen
-#### Sections
-- Profile section
-- Bio card
-- Contact buttons
-- Social media integration
-- Neon text effects
-
-#### Contact Integration
-- Email client
-- Phone dialer
-- Social media apps
-- Location services
-
-## Design System
-### Colors
-```kotlin
-object AppColors {
-    val Primary = Color(0xFF00FFE7)    // Neon Cyan
-    val Secondary = Color(0xFF7F00FF)  // Neon Purple
-    val Background = Color(0xFF121212) // Dark
-    val Text = Color(0xFFFFFFFF)       // White
-    val Accent = Color(0xFFFF00FF)     // Neon Pink
-}
-```
-
-### Typography
-```kotlin
-val Typography = Typography(
-    h1 = TextStyle(
-        fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp
-    ),
-    body1 = TextStyle(
-        fontFamily = Roboto,
-        fontSize = 16.sp
-    )
-)
-```
-
-### Animations
-#### Screen Transitions
-```kotlin
-fun Modifier.screenTransition() = composed {
-    val transition = updateTransition(targetState = true)
-    val alpha by transition.animateFloat { 1f }
-    val offset by transition.animateDp { 0.dp }
-    
-    this
-        .alpha(alpha)
-        .offset(y = offset)
-}
-```
-
-#### Progress Bar Animation
-```kotlin
-@Composable
-fun AnimatedProgressBar(
-    progress: Float,
-    color: Color
-) {
-    val animatedProgress by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = tween(1000)
-    )
-    
-    LinearProgressIndicator(
-        progress = animatedProgress,
-        color = color
-    )
-}
-```
-
-## Dependencies
-### Core Android
-```kotlin
-dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-}
-```
-
-### Compose
-```kotlin
-dependencies {
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-}
-```
-
-### Navigation & Paging
-```kotlin
-dependencies {
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("com.google.accompanist:accompanist-pager:0.32.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
-}
-```
-
-### Firebase
-```kotlin
-dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
-}
-```
-
-### Other Libraries
-```kotlin
-dependencies {
-    implementation("io.insert-koin:koin-android:3.5.3")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("com.google.ar:core:1.40.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("com.airbnb.android:lottie-compose:6.3.0")
-}
-```
-
-## Build Configuration
-```kotlin
-android {
-    compileSdk = 34
-    defaultConfig {
-        minSdk = 24
-        targetSdk = 34
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-```
-
-## Development Guidelines
-### Architecture
-- Follow MVVM pattern
-- Use clean architecture principles
-- Implement proper separation of concerns
-- Use dependency injection
-
-### State Management
-- Use Kotlin Flow for reactive programming
-- Implement proper error handling
-- Use StateFlow for UI state
-- Handle configuration changes
-
-### UI/UX
-- Follow Material3 guidelines
-- Implement custom neon theme
-- Use proper animations
-- Ensure accessibility
-
-### Code Style
-- Follow Kotlin coding conventions
-- Use proper documentation
-- Implement proper testing
-- Use proper error handling
-
-## Testing
-### Unit Tests
-```kotlin
-@Test
-fun `test view model state`() {
-    // Given
-    val viewModel = TestViewModel()
-    
-    // When
-    viewModel.loadData()
-    
-    // Then
-    assert(viewModel.state.value is Success)
-}
-```
-
-### UI Tests
-```kotlin
-@Test
-fun testHomeScreen() {
-    composeTestRule.setContent {
-        HomeScreen()
-    }
-    
-    composeTestRule.onNodeWithText("Timeline").assertIsDisplayed()
-}
-```
-
-## Deployment
-### Debug Build
-```bash
-./gradlew assembleDebug
-```
-
-### Release Build
-```bash
-./gradlew assembleRelease
-```
-
-## Implementation Status
-### Completed
-- Basic app structure
-- Navigation setup
-- Theme implementation
-- Core dependencies
-- PortfolioApplication setup
-- Utility classes
-- Basic UI components
-
-### In Progress
-- Home screen tabbed layout
-- Skills screen animations
-- Project cards redesign
-- Firebase integration
-- State management implementation
-
-### Planned
-- LinkedIn integration
-- GitHub activity feed
-- AR features
-- Analytics implementation
-- Offline support
-- CI/CD pipeline
-- Comprehensive testing
-
-## Known Issues
-- Some parameters in composables are not used
-- AR features need implementation
-- Social media integration pending
-- Performance optimization needed
-- State management needs refinement
-- Error handling needs improvement
-
-## Future Improvements
-- Complete AR feature implementation
-- Add more interactive elements
-- Optimize performance
-- Implement comprehensive testing
-- Add CI/CD pipeline
-- Implement analytics tracking
-- Add dark/light theme support
-- Implement offline support
-- Add unit tests and UI tests
-- Implement proper error handling
-- Add loading states and error states
-- Improve accessibility
-
-## Implementation Details
-
-### State Management
-```kotlin
-class HomeViewModel : ViewModel() {
-    private val _state = MutableStateFlow<UiState>(UiState.Loading)
-    val state: StateFlow<UiState> = _state.asStateFlow()
-    
-    fun loadData() {
-        viewModelScope.launch {
-            try {
-                val data = repository.getData()
-                _state.value = UiState.Success(data)
-            } catch (e: Exception) {
-                _state.value = UiState.Error(e.message)
-            }
-        }
-    }
-}
-```
-
-### Error Handling
-```kotlin
-sealed class Result<out T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-    object Loading : Result<Nothing>()
-}
-
-fun <T> Flow<T>.handleErrors(): Flow<Result<T>> = flow {
-    try {
-        emit(Result.Loading)
-        collect { emit(Result.Success(it)) }
-    } catch (e: Exception) {
-        emit(Result.Error(e))
-    }
-}
-```
-
-### Performance Optimization
-```kotlin
-@Composable
-fun LazyList(
-    items: List<Item>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(
-            items = items,
-            key = { it.id }
-        ) { item ->
-            ItemCard(item = item)
-        }
-    }
-}
-```
+### Data Management
+- Local data storage with Room
+- Remote data fetching with Retrofit
+- Image loading with Coil
+- PDF handling with FileProvider
 
 ### Security
-```kotlin
-object SecurityUtils {
-    fun encryptData(data: String): String {
-        // Implementation
-    }
-    
-    fun decryptData(encryptedData: String): String {
-        // Implementation
-    }
-}
-```
+- Secure file sharing implementation
+- Permission handling
+- Data encryption
+- Safe external link handling
+
+## Recent Updates
+
+### Contact Integration
+- Implemented clickable contact links
+- Added proper intent handling for:
+  - Email client
+  - Phone dialer
+  - LinkedIn profile
+  - GitHub profile
+- Enhanced user interaction with visual feedback
+
+### Resume Management
+- Added resume download functionality
+- Implemented secure file sharing
+- Automatic file management:
+  - Assets to workspace copying
+  - Cache directory handling
+  - FileProvider integration
+- Error handling and user feedback
+
+### UI Improvements
+- Enhanced contact section layout
+- Added visual feedback for clickable elements
+- Improved error messages and toasts
+- Optimized performance
+
+## Dependencies
+- Jetpack Compose
+- Material 3
+- Hilt for DI
+- Room for local storage
+- Retrofit for networking
+- Coil for image loading
+- Accompanist for additional Compose utilities
+
+## Future Enhancements
+1. AR/VR project showcase
+2. Real-time project updates
+3. Interactive 3D elements
+4. Advanced animations
+5. Offline mode improvements
+6. Analytics integration
+7. Performance optimizations
+8. Additional theme options
+
+## Known Issues
+- None currently reported
 
 ## Contributing
-### Code Style
-- Follow Kotlin coding conventions
-- Use proper documentation
-- Implement proper testing
-- Use proper error handling
-
-### Git Workflow
-- Use feature branches
-- Write proper commit messages
-- Create pull requests
-- Review code changes
-
-### Documentation
-- Update documentation
-- Add code comments
-- Write proper README
-- Document API changes
+Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-For any questions or concerns, please contact:
-- Email: [Your Email]
-- GitHub: [Your GitHub]
-- LinkedIn: [Your LinkedIn] 
+This project is licensed under the MIT License - see the LICENSE.md file for details. 

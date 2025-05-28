@@ -91,7 +91,7 @@ fun NeonButton(
                 ambientColor = NeonBlue.copy(alpha = glowAlpha.value)
             ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = DarkPrimary.copy(alpha = 0.8f)
+            containerColor = NeonPrimary.copy(alpha = 0.8f)
         )
     ) {
         Row(

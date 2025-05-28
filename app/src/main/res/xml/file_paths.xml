@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path
+        name="resume"
+        path="." />
+    <files-path
+        name="resume_files"
+        path="." />
+    <external-files-path
+        name="workspace"
+        path="workspace" />
+</paths> 
