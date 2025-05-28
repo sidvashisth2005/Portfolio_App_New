@@ -8,10 +8,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class PortfolioViewModel(
-    private val repository: PortfolioRepository
-) : ViewModel() {
+class PortfolioViewModel : ViewModel(), KoinComponent {
+    private val repository: PortfolioRepository by inject()
+    
     private val _portfolioState = MutableStateFlow<PortfolioState>(PortfolioState.Loading)
     val portfolioState: StateFlow<PortfolioState> = _portfolioState.asStateFlow()
     

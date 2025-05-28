@@ -5,18 +5,48 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class Screen(val route: String, val icon: ImageVector, val label: String) {
-    object Achievements : Screen("achievements", Icons.Default.EmojiEvents, "Home")
-    object Skills : Screen("skills", Icons.Default.Timeline, "Skills")
-    object ARX : Screen("arx", Icons.Default.ViewInAr, "ARX")
-    object Projects : Screen("projects", Icons.Default.Folder, "Projects")
-    object About : Screen("about", Icons.Default.Person, "About")
+sealed class Screen(val route: String) {
+    object Home : Screen("home")
+    object Skills : Screen("skills")
+    object Arx : Screen("arx")
+    object Projects : Screen("projects")
+    object About : Screen("about")
+
+    fun getIcon(): ImageVector {
+        return when (this) {
+            Home -> Icons.Outlined.Home
+            Skills -> Icons.Outlined.Psychology
+            Arx -> Icons.Outlined.ViewInAr
+            Projects -> Icons.Outlined.Work
+            About -> Icons.Outlined.Person
+        }
+    }
+
+    fun getSelectedIcon(): ImageVector {
+        return when (this) {
+            Home -> Icons.Filled.Home
+            Skills -> Icons.Filled.Psychology
+            Arx -> Icons.Filled.ViewInAr
+            Projects -> Icons.Filled.Work
+            About -> Icons.Filled.Person
+        }
+    }
+
+    fun getLabel(): String {
+        return when (this) {
+            Home -> "Home"
+            Skills -> "Skills"
+            Arx -> "ARX"
+            Projects -> "Projects"
+            About -> "About"
+        }
+    }
 
     companion object {
         val bottomNavItems = listOf(
-            Achievements,
+            Home,
             Skills,
-            ARX,
+            Arx,
             Projects,
             About
         )

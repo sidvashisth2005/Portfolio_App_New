@@ -1,125 +1,271 @@
 package com.sid.PortfolioAppNew.ui.screens.about
 
+import android.content.Context
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
-import com.sid.PortfolioAppNew.R
+import com.sid.PortfolioAppNew.ui.components.*
 import com.sid.PortfolioAppNew.ui.theme.*
+import com.sid.PortfolioAppNew.utils.UrlUtils
+import com.sid.PortfolioAppNew.ui.components.PdfViewer
+import android.net.Uri
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import com.sid.PortfolioAppNew.utils.rememberUrlUtils
+import com.sid.PortfolioAppNew.ui.components.NeonTopAppBar
+import com.sid.PortfolioAppNew.ui.components.NeonCard
+import com.sid.PortfolioAppNew.ui.components.NeonButton
+import com.sid.PortfolioAppNew.ui.components.NeonChip
 
+data class ContactInfo(
+    val type: String,
+    val value: String,
+    val icon: @Composable () -> Unit,
+    val action: () -> Unit
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AboutScreen() {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.avatar_glow)
-    )
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever
-    )
+fun AboutScreen(
+    onNavigateBack: () -> Unit
+) {
+    val context = LocalContext.current
+    val urlUtils = rememberUrlUtils()
+    val scrollState = rememberScrollState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF121212))
-    ) {
+    Scaffold(
+        topBar = {
+            NeonTopAppBar(
+                title = "About Me",
+                onNavigateBack = onNavigateBack
+            )
+        }
+    ) { paddingValues ->
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(paddingValues)
+                .verticalScroll(scrollState)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                progress = { progress },
-                modifier = Modifier
-                    .size(200.dp)
-                    .padding(16.dp)
-            )
-
-            Text(
-                text = "About Me",
-                color = NeonBlue,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 16.dp)
-            )
-
             Text(
                 text = "Android Developer & AR Enthusiast",
-                color = NeonPink,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 24.dp)
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                modifier = Modifier.padding(bottom = 32.dp)
             )
-
-            Text(
-                text = "Passionate about creating innovative mobile experiences and pushing the boundaries of AR technology. Specializing in Android development with a focus on modern UI/UX and immersive technologies.",
-                color = Color.White,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)
-            )
-
-            Button(
-                onClick = { /* TODO: Open resume PDF */ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = NeonBlue
-                ),
-                shape = RoundedCornerShape(8.dp),
+            
+            // Bio Section
+            NeonCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 16.dp)
+                    .padding(bottom = 24.dp)
             ) {
-                Text(
-                    text = "View Resume",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Bio",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    
+                    Text(
+                        text = "I'm a passionate Android developer with expertise in modern Android development technologies. " +
+                               "My focus is on creating beautiful, performant, and user-friendly applications. " +
+                               "I love exploring new technologies, especially in the AR/VR space, and I'm always " +
+                               "looking for ways to push the boundaries of what's possible on mobile devices.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                }
             }
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(top = 24.dp)
+            
+            // Contact Section
+            NeonCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
             ) {
-                SocialButton("GitHub", NeonPurple)
-                SocialButton("LinkedIn", NeonCyan)
-                SocialButton("Twitter", NeonPink)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Contact",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    
+                    val contactInfo = listOf(
+                        ContactInfo(
+                            type = "Email",
+                            value = "your.email@example.com",
+                            icon = { Icon(Icons.Default.Email, contentDescription = "Email") },
+                            action = { urlUtils.openEmail(context, "your.email@example.com") }
+                        ),
+                        ContactInfo(
+                            type = "LinkedIn",
+                            value = "linkedin.com/in/yourusername",
+                            icon = { Icon(Icons.Default.Person, contentDescription = "LinkedIn") },
+                            action = { urlUtils.openUrl(context, "https://linkedin.com/in/yourusername") }
+                        ),
+                        ContactInfo(
+                            type = "GitHub",
+                            value = "github.com/yourusername",
+                            icon = { Icon(Icons.Default.Code, contentDescription = "GitHub") },
+                            action = { urlUtils.openUrl(context, "https://github.com/yourusername") }
+                        ),
+                        ContactInfo(
+                            type = "Twitter",
+                            value = "@yourusername",
+                            icon = { Icon(Icons.Default.Chat, contentDescription = "Twitter") },
+                            action = { urlUtils.openUrl(context, "https://twitter.com/yourusername") }
+                        )
+                    )
+                    
+                    contactInfo.forEach { contact ->
+                        ContactItem(contact = contact)
+                    }
+                }
             }
+            
+            // Skills Section
+            NeonCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Key Skills",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    
+                    val skills = listOf(
+                        "Kotlin",
+                        "Jetpack Compose",
+                        "Android Architecture Components",
+                        "Material Design",
+                        "AR/VR Development",
+                        "Clean Architecture",
+                        "MVVM",
+                        "Coroutines",
+                        "Dependency Injection",
+                        "Unit Testing"
+                    )
+                    
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        skills.forEach { skill ->
+                            NeonChip(text = skill)
+                        }
+                    }
+                }
+            }
+            
+            // Download Resume Button
+            NeonButton(
+                text = "Download Resume",
+                onClick = { urlUtils.downloadResume(context, "https://example.com/resume.pdf") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            )
         }
     }
 }
 
 @Composable
-private fun SocialButton(text: String, color: Color) {
-    Button(
-        onClick = { /* TODO: Open social link */ },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color.copy(alpha = 0.2f)
-        ),
-        shape = RoundedCornerShape(8.dp)
+fun ContactItem(contact: ContactInfo) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = text,
-            color = color,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
+        IconButton(
+            onClick = contact.action,
+            modifier = Modifier.padding(end = 16.dp)
+        ) {
+            contact.icon()
+        }
+        
+        Column {
+            Text(
+                text = contact.type,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            
+            Text(
+                text = contact.value,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SocialButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .size(56.dp)
+            .clickable(onClick = onClick),
+        shape = CircleShape,
+        color = Color(0xFF1A1A1A).copy(alpha = 0.9f)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = contentDescription,
+                tint = NeonBlue,
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }
 

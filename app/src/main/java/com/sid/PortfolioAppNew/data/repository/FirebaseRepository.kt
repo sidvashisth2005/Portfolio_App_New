@@ -15,6 +15,7 @@ class FirebaseRepository : PortfolioRepository {
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
+    private val portfolioCollection = firestore.collection("portfolio")
 
     suspend fun signIn(email: String, password: String): Result<Unit> = try {
         auth.signInWithEmailAndPassword(email, password).await()
@@ -91,7 +92,7 @@ class FirebaseRepository : PortfolioRepository {
 
     override suspend fun getPortfolio(): Map<String, Any> {
         return try {
-            val document = firestore.collection("portfolio").document("data").get().await()
+            val document = portfolioCollection.document("main").get().await()
             document.data ?: emptyMap()
         } catch (e: Exception) {
             emptyMap()

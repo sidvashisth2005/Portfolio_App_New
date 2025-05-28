@@ -9,47 +9,43 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sid.PortfolioAppNew.navigation.PortfolioNavGraph
 import com.sid.PortfolioAppNew.ui.components.BottomNavigationBar
+import com.sid.PortfolioAppNew.ui.navigation.NavGraph
 import com.sid.PortfolioAppNew.ui.theme.PortfolioAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             PortfolioAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    val navController = rememberNavController()
+                    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: "home"
+
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigationBar(
+                                currentRoute = currentRoute,
+                                onNavigate = { route ->
+                                    navController.navigate(route) {
+                                        popUpTo(navController.graph.startDestinationId)
+                                        launchSingleTop = true
+                                    }
+                                }
+                            )
+                        }
+                    ) { paddingValues ->
+                        NavGraph(
+                            navController = navController,
+                            modifier = Modifier.padding(paddingValues)
+                        )
+                    }
                 }
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route
-
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                navController = navController,
-                currentRoute = currentRoute
-            )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            PortfolioNavGraph(navController = navController)
         }
     }
 }

@@ -4,9 +4,12 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -17,77 +20,40 @@ import androidx.navigation.NavHostController
 import com.sid.PortfolioAppNew.navigation.Screen
 import com.sid.PortfolioAppNew.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigationBar(
-    navController: NavHostController,
-    currentRoute: String?
+    currentRoute: String,
+    onNavigate: (String) -> Unit
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "nav")
-    val glowAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.7f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "glow"
-    )
-
     NavigationBar(
-        containerColor = Color(0xFF121212),
-        tonalElevation = 4.dp,
-        modifier = Modifier
-            .height(64.dp)
-            .drawBehind {
-                if (currentRoute != null) {
-                    val selectedIndex = Screen.bottomNavItems.indexOfFirst { it.route == currentRoute }
-                    if (selectedIndex != -1) {
-                        val itemWidth = size.width / Screen.bottomNavItems.size
-                        val startX = selectedIndex * itemWidth
-                        
-                        drawLine(
-                            color = NeonBlue.copy(alpha = glowAlpha),
-                            start = Offset(startX, size.height - 2.dp.toPx()),
-                            end = Offset(startX + itemWidth, size.height - 2.dp.toPx()),
-                            strokeWidth = 2.dp.toPx()
-                        )
-                    }
-                }
-            }
+        containerColor = Color(0xFF1A1A1A),
+        contentColor = NeonPrimary,
+        modifier = Modifier.height(64.dp)
     ) {
         Screen.bottomNavItems.forEach { screen ->
             val selected = currentRoute == screen.route
-            
             NavigationBarItem(
+                selected = selected,
+                onClick = { onNavigate(screen.route) },
                 icon = {
                     Icon(
-                        imageVector = screen.icon,
-                        contentDescription = screen.label,
-                        tint = if (selected) NeonBlue else Color.White.copy(alpha = 0.6f)
+                        imageVector = if (selected) screen.getSelectedIcon() else screen.getIcon(),
+                        contentDescription = screen.getLabel()
                     )
                 },
                 label = {
                     Text(
-                        text = screen.label,
-                        color = if (selected) NeonBlue else Color.White.copy(alpha = 0.6f)
+                        text = screen.getLabel(),
+                        style = MaterialTheme.typography.labelSmall
                     )
                 },
-                selected = selected,
-                onClick = {
-                    if (currentRoute != screen.route) {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = NeonBlue,
-                    selectedTextColor = NeonBlue,
-                    indicatorColor = Color(0xFF1A1A1A)
+                    selectedIconColor = NeonPrimary,
+                    unselectedIconColor = Color.White.copy(alpha = 0.6f),
+                    selectedTextColor = NeonPrimary,
+                    unselectedTextColor = Color.White.copy(alpha = 0.6f),
+                    indicatorColor = Color(0xFF2A2A2A)
                 )
             )
         }

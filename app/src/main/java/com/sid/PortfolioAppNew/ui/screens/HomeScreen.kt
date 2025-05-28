@@ -18,18 +18,9 @@ import com.airbnb.lottie.compose.*
 import com.sid.PortfolioAppNew.R
 import com.sid.PortfolioAppNew.ui.components.*
 import com.sid.PortfolioAppNew.ui.theme.*
-import com.sid.PortfolioAppNew.ui.viewmodel.PortfolioViewModel
 
 @Composable
-fun HomeScreen(
-    portfolioViewModel: PortfolioViewModel,
-    onNavigateToProjects: () -> Unit,
-    onNavigateToResume: () -> Unit,
-    onNavigateToContact: () -> Unit,
-    onNavigateToAR: () -> Unit,
-    onNavigateToSkills: () -> Unit,
-    onNavigateTo: (String) -> Unit
-) {
+fun HomeScreen() {
     var isFabExpanded by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableStateOf(0) }
 
@@ -131,27 +122,17 @@ fun HomeScreen(
                 AnimatedGlowButton(
                     text = "View Projects",
                     icon = Icons.Default.Work,
-                    onClick = onNavigateToProjects
-                )
-                AnimatedGlowButton(
-                    text = "View Resume",
-                    icon = Icons.Default.Description,
-                    onClick = onNavigateToResume
+                    onClick = { }
                 )
                 AnimatedGlowButton(
                     text = "View Skills",
                     icon = Icons.Default.Code,
-                    onClick = onNavigateToSkills
+                    onClick = { }
                 )
                 AnimatedGlowButton(
                     text = "Contact Me",
                     icon = Icons.Default.Email,
-                    onClick = onNavigateToContact
-                )
-                AnimatedGlowButton(
-                    text = "AR Experience",
-                    icon = Icons.Default.ViewInAr,
-                    onClick = onNavigateToAR
+                    onClick = { }
                 )
             }
         }
@@ -177,10 +158,7 @@ fun HomeScreen(
             )
             NavigationBarItem(
                 selected = selectedTab == 1,
-                onClick = { 
-                    selectedTab = 1
-                    onNavigateToProjects()
-                },
+                onClick = {  },
                 icon = { Icon(Icons.Default.Work, contentDescription = "Projects") },
                 label = { Text("Projects") },
                 colors = NavigationBarItemDefaults.colors(
@@ -191,10 +169,7 @@ fun HomeScreen(
             )
             NavigationBarItem(
                 selected = selectedTab == 2,
-                onClick = { 
-                    selectedTab = 2
-                    onNavigateToContact()
-                },
+                onClick = {  },
                 icon = { Icon(Icons.Default.Email, contentDescription = "Contact") },
                 label = { Text("Contact") },
                 colors = NavigationBarItemDefaults.colors(
@@ -221,12 +196,12 @@ fun HomeScreen(
                     FABMenuItem(
                         icon = Icons.Default.Settings,
                         text = "Settings",
-                        onClick = { onNavigateTo("settings") }
+                        onClick = { }
                     )
                     FABMenuItem(
                         icon = Icons.Default.Info,
                         text = "About",
-                        onClick = { onNavigateTo("about") }
+                        onClick = { }
                     )
                 }
                 FloatingActionButton(

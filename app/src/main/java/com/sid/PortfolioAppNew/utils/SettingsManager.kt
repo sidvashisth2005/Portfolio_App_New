@@ -1,51 +1,61 @@
 package com.sid.PortfolioAppNew.utils
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-class SettingsManager(private val context: Context) : KoinComponent {
-    private val isDarkThemeKey = booleanPreferencesKey("is_dark_theme")
-    private val notificationsEnabledKey = booleanPreferencesKey("notifications_enabled")
-    private val highQualityARKey = booleanPreferencesKey("high_quality_ar")
+@Singleton
+class SettingsManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+    private val dataStore = context.dataStore
 
-    val isDarkTheme: Flow<Boolean> = context.dataStore.data
+    private object PreferencesKeys {
+        val DARK_MODE = booleanPreferencesKey("dark_mode")
+        val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+        val ANIMATIONS_ENABLED = booleanPreferencesKey("animations_enabled")
+    }
+
+    val darkMode: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[isDarkThemeKey] ?: false
+            preferences[PreferencesKeys.DARK_MODE] ?: false
         }
 
-    val notificationsEnabled: Flow<Boolean> = context.dataStore.data
+    val notificationsEnabled: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[notificationsEnabledKey] ?: true
+            preferences[PreferencesKeys.NOTIFICATIONS_ENABLED] ?: true
         }
 
-    val highQualityAR: Flow<Boolean> = context.dataStore.data
+    val animationsEnabled: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[highQualityARKey] ?: false
+            preferences[PreferencesKeys.ANIMATIONS_ENABLED] ?: true
         }
 
-    suspend fun setDarkTheme(isDark: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[isDarkThemeKey] = isDark
+    suspend fun setDarkMode(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.DARK_MODE] = enabled
         }
     }
 
     suspend fun setNotificationsEnabled(enabled: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[notificationsEnabledKey] = enabled
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.NOTIFICATIONS_ENABLED] = enabled
         }
     }
 
-    suspend fun setHighQualityAR(enabled: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[highQualityARKey] = enabled
+    suspend fun setAnimationsEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ANIMATIONS_ENABLED] = enabled
         }
     }
 } 
