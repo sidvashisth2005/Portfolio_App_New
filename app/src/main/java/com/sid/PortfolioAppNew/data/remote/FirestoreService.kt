@@ -28,18 +28,27 @@ class FirestoreService @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                val projects = snapshot?.documents?.mapNotNull { doc ->
-                    try {
-                        Log.d(TAG, "Processing document: ${doc.id}")
-                        doc.toObject(Project::class.java)?.copy(id = doc.id)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error converting document ${doc.id}: ${e.message}", e)
-                        null
+                try {
+                    val projects = snapshot?.documents?.mapNotNull { doc ->
+                        try {
+                            Log.d(TAG, "Processing document: ${doc.id}")
+                            doc.toObject(Project::class.java)?.copy(id = doc.id)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error converting document ${doc.id}: ${e.message}", e)
+                            null
+                        }
+                    } ?: emptyList()
+                    
+                    if (projects.isEmpty()) {
+                        Log.w(TAG, "No projects found in Firestore")
+                    } else {
+                        Log.d(TAG, "Successfully fetched ${projects.size} projects")
                     }
-                } ?: emptyList()
-                
-                Log.d(TAG, "Successfully fetched ${projects.size} projects")
-                trySend(projects)
+                    trySend(projects)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error processing snapshot: ${e.message}", e)
+                    close(e)
+                }
             }
         
         awaitClose { 
