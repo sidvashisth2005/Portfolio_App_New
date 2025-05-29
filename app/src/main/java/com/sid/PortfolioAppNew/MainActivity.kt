@@ -12,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.sid.PortfolioAppNew.ui.components.BottomNavigationBar
 import com.sid.PortfolioAppNew.ui.navigation.NavGraph
 import com.sid.PortfolioAppNew.ui.theme.PortfolioAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

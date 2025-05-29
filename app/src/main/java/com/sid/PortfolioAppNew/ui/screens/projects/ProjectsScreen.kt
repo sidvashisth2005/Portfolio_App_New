@@ -33,60 +33,67 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.sid.PortfolioAppNew.data.models.Project
 
-data class Project(
-    val id: String,
-    val title: String,
-    val description: String,
-    val imageUrl: String,
-    val githubUrl: String,
-    val demoUrl: String,
-    val technologies: List<String>
-)
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectsScreen() {
-    var isRefreshing by remember { mutableStateOf(false) }
-    var expandedProjectId by remember { mutableStateOf<String?>(null) }
+fun ProjectsScreen(
+    onNavigateBack: () -> Unit = {},
+    onProjectClick: (String) -> Unit = {},
+    viewModel: ProjectsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
 
-    val projects = remember {
-        listOf(
-            Project(
-                id = "1",
-                title = "Portfolio App",
-                description = "A modern Android portfolio app built with Jetpack Compose, showcasing my projects and skills.",
-                imageUrl = "https://example.com/portfolio.jpg",
-                githubUrl = "https://github.com/yourusername/portfolio",
-                demoUrl = "https://play.google.com/store/apps/details?id=com.example.portfolio",
-                technologies = listOf("Kotlin", "Jetpack Compose", "Material3", "Coil")
-            ),
-            Project(
-                id = "2",
-                title = "AR Experience",
-                description = "An augmented reality application that brings digital content into the real world.",
-                imageUrl = "https://example.com/ar.jpg",
-                githubUrl = "https://github.com/yourusername/ar-experience",
-                demoUrl = "https://play.google.com/store/apps/details?id=com.example.ar",
-                technologies = listOf("ARCore", "Kotlin", "OpenGL", "Sceneform")
+    Scaffold(
+        topBar = {
+            NeonTopAppBar(
+                title = "Projects",
+                onNavigateBack = onNavigateBack
             )
-        )
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF121212))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(projects) { project ->
-            ProjectCard(
-                project = project,
-                isExpanded = project.id == expandedProjectId,
-                onExpandClick = {
-                    expandedProjectId = if (expandedProjectId == project.id) null else project.id
+        }
+    ) { paddingValues ->
+        when (uiState) {
+            is ProjectsUiState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    CircularProgressIndicator()
                 }
-            )
+            }
+            is ProjectsUiState.Success -> {
+                val projects = (uiState as ProjectsUiState.Success).projects
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(projects) { project ->
+                        ProjectCard(
+                            project = project,
+                            onClick = { onProjectClick(project.id) }
+                        )
+                    }
+                }
+            }
+            is ProjectsUiState.Error -> {
+                val message = (uiState as ProjectsUiState.Error).message
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
     }
 }
@@ -95,13 +102,14 @@ fun ProjectsScreen() {
 @Composable
 private fun ProjectCard(
     project: Project,
-    isExpanded: Boolean,
-    onExpandClick: () -> Unit
+    onClick: () -> Unit
 ) {
+    var isExpanded by remember { mutableStateOf(false) }
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onExpandClick),
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF1A1A1A)
@@ -141,7 +149,7 @@ private fun ProjectCard(
 
             // Project Description
             Text(
-                text = project.description,
+                text = project.shortDesc,
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 16.sp
             )
@@ -183,7 +191,7 @@ private fun ProjectCard(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("GitHub")
+                        Text("View Code")
                     }
 
                     Button(
@@ -199,7 +207,7 @@ private fun ProjectCard(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Demo")
+                        Text("Try Demo")
                     }
                 }
             }

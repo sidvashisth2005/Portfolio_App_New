@@ -3,7 +3,6 @@ package com.sid.PortfolioAppNew.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.sid.PortfolioAppNew.data.model.User
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 class FirebaseRepository : PortfolioRepository {
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
     private val portfolioCollection = firestore.collection("portfolio")
 
     suspend fun signIn(email: String, password: String): Result<Unit> = try {
@@ -52,24 +50,6 @@ class FirebaseRepository : PortfolioRepository {
         val currentUser = auth.currentUser ?: throw Exception("No user logged in")
         firestore.collection("users").document(currentUser.uid).set(user).await()
         Result.success(Unit)
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
-
-    suspend fun uploadFile(path: String, data: ByteArray): Result<String> = try {
-        val ref = storage.reference.child(path)
-        ref.putBytes(data).await()
-        val downloadUrl = ref.downloadUrl.await()
-        Result.success(downloadUrl.toString())
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
-
-    suspend fun downloadFile(filePath: String): Result<ByteArray> = try {
-        val ref = storage.reference.child(filePath)
-        val maxSize = 1024L * 1024L // 1MB
-        val bytes = ref.getBytes(maxSize).await()
-        Result.success(bytes)
     } catch (e: Exception) {
         Result.failure(e)
     }

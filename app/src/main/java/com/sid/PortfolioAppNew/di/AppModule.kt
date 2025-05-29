@@ -1,15 +1,53 @@
 package com.sid.PortfolioAppNew.di
 
-import com.sid.PortfolioAppNew.data.repository.PortfolioRepository
+import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sid.PortfolioAppNew.data.repository.FirebaseRepository
-import com.sid.PortfolioAppNew.ui.viewmodel.PortfolioViewModel
+import com.sid.PortfolioAppNew.data.repository.PortfolioRepository
+import com.sid.PortfolioAppNew.data.repository.ProjectRepository
+import com.sid.PortfolioAppNew.data.repository.FirebaseProjectRepository
+import com.sid.PortfolioAppNew.data.remote.FirestoreService
 import com.sid.PortfolioAppNew.utils.SettingsManager
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val appModule = module {
-    single { SettingsManager(androidContext()) }
-    single<PortfolioRepository> { FirebaseRepository() }
-    viewModel { PortfolioViewModel() }
+@Module
+@InstallIn(SingletonComponent::class)
+object AppModule {
+    
+    @Provides
+    @Singleton
+    fun provideSettingsManager(
+        @ApplicationContext context: Context
+    ): SettingsManager {
+        return SettingsManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun providePortfolioRepository(): PortfolioRepository {
+        return FirebaseRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirestoreService(firestore: FirebaseFirestore): FirestoreService {
+        return FirestoreService(firestore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProjectRepository(firestoreService: FirestoreService): ProjectRepository {
+        return FirebaseProjectRepository(firestoreService)
+    }
 } 

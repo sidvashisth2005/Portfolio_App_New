@@ -10,6 +10,7 @@ import com.sid.PortfolioAppNew.ui.screens.arx.ArxScreen
 import com.sid.PortfolioAppNew.ui.screens.home.HomeScreen
 import com.sid.PortfolioAppNew.ui.screens.projects.ProjectsScreen
 import com.sid.PortfolioAppNew.ui.screens.skills.SkillsScreen
+import com.sid.PortfolioAppNew.ui.screens.projects.ProjectDetailScreen
 
 @Composable
 fun NavGraph(
@@ -31,7 +32,19 @@ fun NavGraph(
             ArxScreen()
         }
         composable("projects") {
-            ProjectsScreen()
+            ProjectsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onProjectClick = { projectId ->
+                    navController.navigate("projectDetail/$projectId")
+                }
+            )
+        }
+        composable("projectDetail/{projectId}") { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId") ?: ""
+            ProjectDetailScreen(
+                projectId = projectId,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable("about") {
             AboutScreen(
