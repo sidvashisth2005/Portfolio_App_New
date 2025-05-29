@@ -20,6 +20,13 @@ class ProjectsViewModel @Inject constructor(
 
     init {
         Log.d(TAG, "Initializing ProjectsViewModel")
+        loadProjects()
+    }
+
+    fun loadProjects() {
+        Log.d(TAG, "Loading projects")
+        _uiState.value = ProjectsUiState.Loading
+        
         viewModelScope.launch {
             repository.getProjects()
                 .catch { error ->
@@ -28,7 +35,16 @@ class ProjectsViewModel @Inject constructor(
                 }
                 .collect { projects ->
                     Log.d(TAG, "Received ${projects.size} projects")
-                    _uiState.value = ProjectsUiState.Success(projects)
+                    if (projects.isEmpty()) {
+                        Log.w(TAG, "No projects found in Firestore")
+                        _uiState.value = ProjectsUiState.Success(emptyList())
+                    } else {
+                        Log.d(TAG, "Projects loaded successfully")
+                        projects.forEach { project ->
+                            Log.d(TAG, "Project: ${project.title}, Preview URL: ${project.previewImageUrl}")
+                        }
+                        _uiState.value = ProjectsUiState.Success(projects)
+                    }
                 }
         }
     }
@@ -41,6 +57,7 @@ class ProjectsViewModel @Inject constructor(
                 val project = repository.getProject(id)
                 if (project != null) {
                     Log.d(TAG, "Successfully fetched project: ${project.title}")
+                    Log.d(TAG, "Preview image URL: ${project.previewImageUrl}")
                     _uiState.value = ProjectsUiState.Success(listOf(project))
                 } else {
                     Log.w(TAG, "Project not found with ID: $id")

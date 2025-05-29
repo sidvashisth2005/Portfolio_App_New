@@ -6,6 +6,7 @@ data class Project(
     val shortDesc: String = "",
     val longDesc: String = "",
     val images: List<String> = emptyList(),
+    val previewImageUrl: String = "",
     val githubLink: String = "",
     val demoLink: String = "",
     val technologies: List<String> = emptyList(),
