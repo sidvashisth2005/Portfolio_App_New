@@ -11,23 +11,12 @@ import com.sid.PortfolioAppNew.ui.screens.projects.ProjectsScreen
 import com.sid.PortfolioAppNew.ui.screens.projects.ProjectDetailScreen
 import com.sid.PortfolioAppNew.ui.screens.about.AboutScreen
 import androidx.compose.ui.Modifier
-import dagger.hilt.android.EntryPointAccessors
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sid.PortfolioAppNew.utils.SettingsManager
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PortfolioNavGraph(navController: NavHostController) {
-    val context = LocalContext.current
-    val settingsManager = remember {
-        EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            SettingsEntryPoint::class.java
-        ).settingsManager()
-    }
-
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -43,6 +32,12 @@ fun PortfolioNavGraph(navController: NavHostController) {
                 }
             )
         }
+        composable(Screen.Skills.route) {
+            com.sid.PortfolioAppNew.ui.screens.skills.SkillsScreen()
+        }
+        composable(Screen.ARX.route) {
+            com.sid.PortfolioAppNew.ui.screens.arx.ArxScreen()
+        }
         composable(Screen.ProjectDetail.route + "/{projectId}") { backStackEntry ->
             val projectId = backStackEntry.arguments?.getString("projectId") ?: ""
             ProjectDetailScreen(
@@ -56,10 +51,4 @@ fun PortfolioNavGraph(navController: NavHostController) {
             )
         }
     }
-}
-
-@dagger.hilt.EntryPoint
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
-interface SettingsEntryPoint {
-    fun settingsManager(): SettingsManager
 } 

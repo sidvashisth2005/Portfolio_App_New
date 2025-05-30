@@ -35,6 +35,9 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sid.PortfolioAppNew.data.models.Project
+import com.airbnb.lottie.compose.*
+import com.sid.PortfolioAppNew.R
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,25 +64,82 @@ fun ProjectsScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    // Loading animation
+                    val composition by rememberLottieComposition(
+                        LottieCompositionSpec.RawRes(R.raw.loading_animation)
+                    )
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                    
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        LottieAnimation(
+                            composition = composition,
+                            progress = { progress },
+                            modifier = Modifier.size(200.dp)
+                        )
+                        Text(
+                            text = "Loading Projects...",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                    }
                 }
             }
             is ProjectsUiState.Success -> {
                 val projects = (uiState as ProjectsUiState.Success).projects
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 300.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(projects) { project ->
-                        ProjectCard(
-                            project = project,
-                            onClick = { onProjectClick(project.id) }
+                if (projects.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // Empty state animation
+                        val composition by rememberLottieComposition(
+                            LottieCompositionSpec.RawRes(R.raw.empty_state)
                         )
+                        val progress by animateLottieCompositionAsState(
+                            composition = composition,
+                            iterations = 1
+                        )
+                        
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            LottieAnimation(
+                                composition = composition,
+                                progress = { progress },
+                                modifier = Modifier.size(200.dp)
+                            )
+                            Text(
+                                text = "No Projects Found",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(top = 16.dp)
+                            )
+                        }
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 300.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(projects) { project ->
+                            ProjectCard(
+                                project = project,
+                                onClick = { onProjectClick(project.id) }
+                            )
+                        }
                     }
                 }
             }
@@ -91,11 +151,37 @@ fun ProjectsScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error
+                    // Error animation
+                    val composition by rememberLottieComposition(
+                        LottieCompositionSpec.RawRes(R.raw.error_animation)
                     )
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = 1
+                    )
+                    
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        LottieAnimation(
+                            composition = composition,
+                            progress = { progress },
+                            modifier = Modifier.size(200.dp)
+                        )
+                        Text(
+                            text = message,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                        Button(
+                            onClick = { viewModel.refreshProjects() },
+                            modifier = Modifier.padding(top = 16.dp)
+                        ) {
+                            Text("Retry")
+                        }
+                    }
                 }
             }
         }
@@ -109,6 +195,7 @@ private fun ProjectCard(
     onClick: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
     
     Card(
         modifier = Modifier
@@ -122,7 +209,7 @@ private fun ProjectCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Project Image Placeholder
+            // Project Image with Coil
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,11 +218,31 @@ private fun ProjectCard(
                     .background(Color.DarkGray),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Image,
-                    contentDescription = "Project Image",
-                    tint = Color.LightGray,
-                    modifier = Modifier.size(64.dp)
+                if (isLoading) {
+                    // Loading animation
+                    val composition by rememberLottieComposition(
+                        LottieCompositionSpec.RawRes(R.raw.image_loading)
+                    )
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                    
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { progress },
+                        modifier = Modifier.size(64.dp)
+                    )
+                }
+                
+                AsyncImage(
+                    model = project.previewImageUrl,
+                    contentDescription = "Project Preview",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    onLoading = { isLoading = true },
+                    onSuccess = { isLoading = false },
+                    onError = { isLoading = false }
                 )
             }
 

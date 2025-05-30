@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sid.PortfolioAppNew.ui.navigation.NavigationAnimations
 import com.sid.PortfolioAppNew.ui.screens.home.HomeScreen
+import com.sid.PortfolioAppNew.ui.screens.skills.SkillsScreen
+import com.sid.PortfolioAppNew.ui.screens.arx.ArxScreen
 import com.sid.PortfolioAppNew.ui.screens.projects.ProjectsScreen
 import com.sid.PortfolioAppNew.ui.screens.projects.ProjectDetailScreen
 import com.sid.PortfolioAppNew.ui.screens.about.AboutScreen
@@ -28,6 +30,26 @@ fun AppNavigation() {
             popExitTransition = { NavigationAnimations.popExitTransition() }
         ) {
             HomeScreen()
+        }
+
+        composable(
+            route = Screen.Skills.route,
+            enterTransition = { NavigationAnimations.enterTransition() },
+            exitTransition = { NavigationAnimations.exitTransition() },
+            popEnterTransition = { NavigationAnimations.popEnterTransition() },
+            popExitTransition = { NavigationAnimations.popExitTransition() }
+        ) {
+            SkillsScreen()
+        }
+
+        composable(
+            route = Screen.ARX.route,
+            enterTransition = { NavigationAnimations.enterTransition() },
+            exitTransition = { NavigationAnimations.exitTransition() },
+            popEnterTransition = { NavigationAnimations.popEnterTransition() },
+            popExitTransition = { NavigationAnimations.popExitTransition() }
+        ) {
+            ArxScreen()
         }
 
         composable(

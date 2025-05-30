@@ -27,12 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import com.sid.PortfolioAppNew.ui.components.*
-
-data class Skill(
-    val name: String,
-    val percentage: Int,
-    val color: Color
-)
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.*
+import com.sid.PortfolioAppNew.R
 
 enum class SkillCategory {
     PROGRAMMING_LANGUAGES,
@@ -43,109 +40,120 @@ enum class SkillCategory {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SkillsScreen() {
-    val scrollState = rememberScrollState()
+fun SkillsScreen(
+    onNavigateBack: () -> Unit = {},
+    viewModel: SkillsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
     
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Programming Languages
-        SkillCategory(
-            title = "Programming Languages",
-            skills = listOf(
-                Skill("Kotlin", 90, Color(0xFF00FFE7)),
-                Skill("Java", 85, Color(0xFF7F00FF)),
-                Skill("Python", 80, Color(0xFFFF4081)),
-                Skill("C++", 75, Color(0xFFFFC107)),
-                Skill("C", 70, Color(0xFF4CAF50)),
-                Skill("HTML/CSS", 80, Color(0xFF03A9F4))
-            )
+        // Lottie animation for header
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(R.raw.skills_animation)
+        )
+        val progress by animateLottieCompositionAsState(
+            composition = composition,
+            iterations = LottieConstants.IterateForever
         )
         
-        // Tools & Platforms
-        SkillCategory(
-            title = "Tools & Platforms",
-            skills = listOf(
-                Skill("Android Studio", 95, Color(0xFF00FFE7)),
-                Skill("Git", 90, Color(0xFF7F00FF)),
-                Skill("Firebase", 85, Color(0xFFFF4081)),
-                Skill("Docker", 75, Color(0xFFFFC107)),
-                Skill("Jenkins", 70, Color(0xFF4CAF50))
-            )
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier
+                .size(200.dp)
+                .padding(bottom = 16.dp)
         )
         
-        // Expertise
-        SkillCategory(
-            title = "Expertise",
-            skills = listOf(
-                Skill("Android Development", 95, Color(0xFF00FFE7)),
-                Skill("Jetpack Compose", 90, Color(0xFF7F00FF)),
-                Skill("Clean Architecture", 85, Color(0xFFFF4081)),
-                Skill("MVVM", 90, Color(0xFFFFC107)),
-                Skill("Unit Testing", 85, Color(0xFF4CAF50))
-            )
-        )
-        
-        // Soft Skills
-        SkillCategory(
-            title = "Soft Skills",
-            skills = listOf(
-                Skill("Problem Solving", 90, Color(0xFF00FFE7)),
-                Skill("Team Leadership", 85, Color(0xFF7F00FF)),
-                Skill("Communication", 90, Color(0xFFFF4081)),
-                Skill("Project Management", 80, Color(0xFFFFC107))
-            )
-        )
-        
-        // Languages
-        SkillCategory(
-            title = "Languages",
-            skills = listOf(
-                Skill("English", 95, Color(0xFF00FFE7)),
-                Skill("Hindi", 90, Color(0xFF7F00FF)),
-                Skill("French", 70, Color(0xFFFF4081))
-            )
-        )
-    }
-}
-
-@Composable
-private fun SkillCategory(
-    title: String,
-    skills: List<Skill>
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
+            text = "My Skills",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 24.dp)
         )
         
-        skills.forEach { skill ->
-            SkillProgressBar(skill)
+        when (uiState) {
+            is SkillsUiState.Loading -> {
+                CircularProgressIndicator()
+            }
+            is SkillsUiState.Success -> {
+                val skills = (uiState as SkillsUiState.Success).skills
+                SkillsByCategory(skills = skills)
+            }
+            is SkillsUiState.Error -> {
+                Text(
+                    text = (uiState as SkillsUiState.Error).message,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun SkillProgressBar(skill: Skill) {
+private fun SkillsByCategory(skills: List<Skill>) {
+    val grouped = skills.groupBy { it.category }
+    val lottieMap = mapOf(
+        "Programming Languages" to R.raw.skills_animation,
+        "Frameworks & Libraries" to R.raw.skills_animation,
+        "Tools & Platforms" to R.raw.skills_animation,
+        "Soft Skills" to R.raw.skills_animation
+    )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
+    ) {
+        grouped.forEach { (category, skillsInCategory) ->
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Optional: Lottie animation above each category
+                lottieMap[category]?.let { lottieRes ->
+                    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieRes))
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { progress },
+                        modifier = Modifier
+                            .size(80.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
+                Text(
+                    text = category,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 22.sp
+                    ),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    skillsInCategory.forEach { skill ->
+                        AnimatedSkillBar(skill)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnimatedSkillBar(skill: Skill) {
     val progress by animateFloatAsState(
-        targetValue = skill.percentage / 100f,
-        animationSpec = tween(
-            durationMillis = 1000,
-            easing = FastOutSlowInEasing
-        ),
+        targetValue = skill.level / 100f,
+        animationSpec = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
         label = "progress"
     )
-    
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -161,20 +169,19 @@ private fun SkillProgressBar(skill: Skill) {
                 color = Color.White
             )
             Text(
-                text = "${skill.percentage}%",
+                text = "${skill.level}%",
                 style = MaterialTheme.typography.bodyMedium,
                 color = skill.color
             )
         }
-        
         LinearProgressIndicator(
-            progress = progress,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
+                .height(10.dp)
                 .clip(MaterialTheme.shapes.small),
             color = skill.color,
-            trackColor = Color.DarkGray
+            trackColor = Color.DarkGray,
+            progress = { progress }
         )
     }
 } 
