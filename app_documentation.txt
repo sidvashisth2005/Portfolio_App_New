@@ -61,6 +61,14 @@ A modern Android portfolio application built with Jetpack Compose, showcasing pr
 - Clean Architecture principles
 - Repository pattern for data management
 - Dependency Injection with Hilt
+- Modular project structure
+
+### Build Configuration
+- Gradle 8.2.2
+- Kotlin 1.9.22
+- Compose BOM 2024.02.00
+- Android Gradle Plugin 8.2.2
+- Optimized dependency management
 
 ### UI Components
 - Custom composables:
@@ -86,6 +94,18 @@ A modern Android portfolio application built with Jetpack Compose, showcasing pr
 - Safe external link handling
 
 ## Recent Updates
+
+### Build System Improvements
+- Optimized build.gradle configuration
+- Streamlined plugin management in settings.gradle
+- Removed redundant repository declarations
+- Enhanced build performance
+
+### Project Detail Screen Refactoring
+- Improved tab composables organization
+- Converted tab composables to top-level functions
+- Enhanced code maintainability and reusability
+- Optimized screen performance
 
 ### Contact Integration
 - Implemented clickable contact links
@@ -119,6 +139,9 @@ A modern Android portfolio application built with Jetpack Compose, showcasing pr
 - Retrofit for networking
 - Coil for image loading
 - Accompanist for additional Compose utilities
+- Kotlin Coroutines
+- Lifecycle components
+- Navigation Compose
 
 ## Future Enhancements
 1. AR/VR project showcase
@@ -129,6 +152,8 @@ A modern Android portfolio application built with Jetpack Compose, showcasing pr
 6. Analytics integration
 7. Performance optimizations
 8. Additional theme options
+9. Enhanced build system optimization
+10. Improved modularization
 
 ## Known Issues
 - None currently reported

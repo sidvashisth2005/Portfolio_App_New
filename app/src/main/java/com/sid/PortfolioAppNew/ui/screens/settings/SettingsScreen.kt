@@ -5,26 +5,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.sid.PortfolioAppNew.utils.SettingsManager
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
     settingsManager: SettingsManager,
     modifier: Modifier = Modifier
 ) {
-    val darkMode by settingsManager.darkMode.collectAsState(initial = false)
-    val notificationsEnabled by settingsManager.notificationsEnabled.collectAsState(initial = true)
-    val animationsEnabled by settingsManager.animationsEnabled.collectAsState(initial = true)
-
-    val coroutineScope = rememberCoroutineScope()
+    var darkMode by remember { mutableStateOf(settingsManager.isDarkMode) }
+    var notificationsEnabled by remember { mutableStateOf(settingsManager.isNotificationsEnabled) }
 
     Column(
         modifier = modifier
@@ -41,21 +38,20 @@ fun SettingsScreen(
             title = "Dark Mode",
             description = "Enable dark theme",
             checked = darkMode,
-            onCheckedChange = { coroutineScope.launch { settingsManager.setDarkMode(it) } }
+            onCheckedChange = { 
+                darkMode = it
+                settingsManager.isDarkMode = it
+            }
         )
 
         SettingItem(
             title = "Notifications",
             description = "Enable push notifications",
             checked = notificationsEnabled,
-            onCheckedChange = { coroutineScope.launch { settingsManager.setNotificationsEnabled(it) } }
-        )
-
-        SettingItem(
-            title = "Animations",
-            description = "Enable UI animations",
-            checked = animationsEnabled,
-            onCheckedChange = { coroutineScope.launch { settingsManager.setAnimationsEnabled(it) } }
+            onCheckedChange = { 
+                notificationsEnabled = it
+                settingsManager.isNotificationsEnabled = it
+            }
         )
     }
 }

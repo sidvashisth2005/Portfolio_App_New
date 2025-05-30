@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ar_navigation_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="arcore_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="kotlin_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="maps_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="vr_gallery_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="unity_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="csharp_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="modeling_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="model_viewer_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="opengl_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="portfolio_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="compose_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="material_design_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="task_manager_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="mvvm_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="room_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="coroutines_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="ecommerce_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="react_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="nodejs_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="mongodb_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="blog_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="nextjs_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="graphql_icon">@drawable/ic_launcher_foreground</drawable>
+    <drawable name="postgresql_icon">@drawable/ic_launcher_foreground</drawable>
+</resources> 

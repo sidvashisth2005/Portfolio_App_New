@@ -3,11 +3,7 @@ package com.sid.PortfolioAppNew.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
@@ -40,12 +36,13 @@ val NeonSurface = Color(0xFF1A1A1A)
 // Neon theme colors
 val NeonPrimary = Color(0xFF00FFE7)
 val NeonSecondary = Color(0xFF7F00FF)
+val NeonAccent = Color(0xFFFF00FF)
 val NeonTertiary = Color(0xFFFF00FF)
-val NeonBlue = Color(0xFF00F3FF)
+val NeonBlue = Color(0xFF00FFFF)
 val NeonPink = Color(0xFFFF00FF)
 val NeonPurple = Color(0xFF9D00FF)
 val NeonGreen = Color(0xFF00FF00)
-val NeonYellow = Color(0xFFFFE600)
+val NeonYellow = Color(0xFFFFFF00)
 val NeonCyan = Color(0xFF00FFE7)
 val NeonOrange = Color(0xFFFF6B00)
 val NeonRed = Color(0xFFFF0000)
@@ -63,18 +60,22 @@ val NeonSuccess = Color(0xFF00E676)
 val NeonWarning = Color(0xFFFFD600)
 val NeonInfo = Color(0xFF00B0FF)
 
+// Cyberpunk theme colors
+val DarkOnSurface = Color.White
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Primary,
-    secondary = Secondary,
-    tertiary = Tertiary,
+    primary = NeonPrimary,
+    secondary = NeonSecondary,
+    tertiary = NeonAccent,
     background = DarkBackground,
     surface = DarkSurface,
-    error = Error,
-    onPrimary = OnPrimary,
-    onSecondary = OnSecondary,
-    onTertiary = OnTertiary,
-    onBackground = OnBackground,
-    onSurface = OnSurface
+    error = NeonError,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onTertiary = Color.Black,
+    onBackground = Color.White,
+    onSurface = DarkOnSurface,
+    onError = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -103,14 +104,14 @@ fun PortfolioAppTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> DarkColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 

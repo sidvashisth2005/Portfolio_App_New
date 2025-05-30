@@ -1,61 +1,29 @@
 package com.sid.PortfolioAppNew.utils
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 @Singleton
 class SettingsManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val dataStore = context.dataStore
+    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    private object PreferencesKeys {
-        val DARK_MODE = booleanPreferencesKey("dark_mode")
-        val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
-        val ANIMATIONS_ENABLED = booleanPreferencesKey("animations_enabled")
-    }
+    var isDarkMode: Boolean
+        get() = prefs.getBoolean(KEY_DARK_MODE, false)
+        set(value) = prefs.edit { putBoolean(KEY_DARK_MODE, value) }
 
-    val darkMode: Flow<Boolean> = dataStore.data
-        .map { preferences ->
-            preferences[PreferencesKeys.DARK_MODE] ?: false
-        }
+    var isNotificationsEnabled: Boolean
+        get() = prefs.getBoolean(KEY_NOTIFICATIONS, true)
+        set(value) = prefs.edit { putBoolean(KEY_NOTIFICATIONS, value) }
 
-    val notificationsEnabled: Flow<Boolean> = dataStore.data
-        .map { preferences ->
-            preferences[PreferencesKeys.NOTIFICATIONS_ENABLED] ?: true
-        }
-
-    val animationsEnabled: Flow<Boolean> = dataStore.data
-        .map { preferences ->
-            preferences[PreferencesKeys.ANIMATIONS_ENABLED] ?: true
-        }
-
-    suspend fun setDarkMode(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKeys.DARK_MODE] = enabled
-        }
-    }
-
-    suspend fun setNotificationsEnabled(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKeys.NOTIFICATIONS_ENABLED] = enabled
-        }
-    }
-
-    suspend fun setAnimationsEnabled(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKeys.ANIMATIONS_ENABLED] = enabled
-        }
+    companion object {
+        private const val PREFS_NAME = "portfolio_app_prefs"
+        private const val KEY_DARK_MODE = "dark_mode"
+        private const val KEY_NOTIFICATIONS = "notifications"
     }
 } 

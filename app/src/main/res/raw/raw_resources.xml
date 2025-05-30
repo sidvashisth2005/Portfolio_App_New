@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AR/VR Development -->
+    <raw name="ar_navigation_icon" />
+    <raw name="arcore_icon" />
+    <raw name="kotlin_icon" />
+    <raw name="maps_icon" />
+    <raw name="ar_vr_development" />
+    <raw name="vr_gallery_icon" />
+    <raw name="unity_icon" />
+    <raw name="csharp_icon" />
+    <raw name="modeling_icon" />
+    <raw name="model_viewer_icon" />
+    <raw name="opengl_icon" />
+
+    <!-- Android Development -->
+    <raw name="android_development" />
+    <raw name="portfolio_icon" />
+    <raw name="compose_icon" />
+    <raw name="material_design_icon" />
+    <raw name="task_manager_icon" />
+    <raw name="mvvm_icon" />
+    <raw name="room_icon" />
+    <raw name="coroutines_icon" />
+
+    <!-- Web Development -->
+    <raw name="web_development" />
+    <raw name="ecommerce_icon" />
+    <raw name="react_icon" />
+    <raw name="nodejs_icon" />
+    <raw name="mongodb_icon" />
+    <raw name="blog_icon" />
+    <raw name="nextjs_icon" />
+    <raw name="graphql_icon" />
+    <raw name="postgresql_icon" />
+
+    <!-- Skills -->
+    <raw name="tech_background" />
+    <raw name="android_sdk_icon" />
+    <raw name="spatial_icon" />
+    <raw name="backend_development" />
+    <raw name="firebase_icon" />
+    <raw name="api_icon" />
+    <raw name="tools_icon" />
+    <raw name="git_icon" />
+    <raw name="docker_icon" />
+    <raw name="cicd_icon" />
+    <raw name="agile_icon" />
+    <raw name="github_placeholder" />
+</resources> 

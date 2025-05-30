@@ -18,6 +18,7 @@ object SampleProjects {
                       "Facilitates real-time interaction between nearby users through spatial scanning and request-based connections. " +
                       "Allows users to leave geo-tagged 3D \"memory\" models at specific locations, accessible from multiple devices. " +
                       "Merges digital and physical realms to enable immersive, location-aware social experiences in augmented reality.",
+            previewImageUrl = "$GITHUB_RAW_BASE/images/projects/around-you/screen1.png",
             images = listOf(
                 "$GITHUB_RAW_BASE/images/projects/around-you/screen1.png",
                 "$GITHUB_RAW_BASE/images/projects/around-you/screen2.png"
@@ -43,6 +44,7 @@ object SampleProjects {
             longDesc = "Designed a multi-level AR-based game where users scan real-world objects to trigger random dares on their phone screens. " +
                       "Built using Unity, Blender, and Vuforia, leveraging AR markers and dynamic gameplay progression. " +
                       "Encouraged creativity and real-world interaction, enhancing user immersion with custom-selected objects and tasks.",
+            previewImageUrl = "$GITHUB_RAW_BASE/images/projects/dare-tiles/screen1.png",
             images = listOf(
                 "$GITHUB_RAW_BASE/images/projects/dare-tiles/screen1.png",
                 "$GITHUB_RAW_BASE/images/projects/dare-tiles/screen2.png"
@@ -67,6 +69,7 @@ object SampleProjects {
             longDesc = "Developed an immersive AR-based treasure hunt app using Unity, Blender, and Vuforia, with C# for backend scripting. " +
                       "Players receive their first clue and progress through the game by scanning AR-marked locations to reveal the next hint. " +
                       "Emphasized creativity and interactive design to enhance user engagement and puzzle-solving experience.",
+            previewImageUrl = "$GITHUB_RAW_BASE/images/projects/ar-hunt/screen1.png",
             images = listOf(
                 "$GITHUB_RAW_BASE/images/projects/ar-hunt/screen1.png",
                 "$GITHUB_RAW_BASE/images/projects/ar-hunt/screen2.png"
@@ -94,6 +97,7 @@ object SampleProjects {
                       "Key features include Firebase Authentication with role-based access (landlord/tenant), " +
                       "property listing and search with real-time updates, image/document uploads via Firebase Storage, " +
                       "rental request management, and personalized dashboards.",
+            previewImageUrl = "$GITHUB_RAW_BASE/images/projects/homerental/screen1.png",
             images = listOf(
                 "$GITHUB_RAW_BASE/images/projects/homerental/screen1.png",
                 "$GITHUB_RAW_BASE/images/projects/homerental/screen2.png"

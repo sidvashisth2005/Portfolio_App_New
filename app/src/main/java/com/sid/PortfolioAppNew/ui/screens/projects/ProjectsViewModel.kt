@@ -23,30 +23,33 @@ class ProjectsViewModel @Inject constructor(
         loadProjects()
     }
 
-    fun loadProjects() {
-        Log.d(TAG, "Loading projects")
-        _uiState.value = ProjectsUiState.Loading
-        
+    private fun loadProjects() {
         viewModelScope.launch {
-            repository.getProjects()
-                .catch { error ->
-                    Log.e(TAG, "Error in projects flow: ${error.message}", error)
-                    _uiState.value = ProjectsUiState.Error(error.message ?: "Unknown error")
-                }
-                .collect { projects ->
-                    Log.d(TAG, "Received ${projects.size} projects")
-                    if (projects.isEmpty()) {
-                        Log.w(TAG, "No projects found in Firestore")
-                        _uiState.value = ProjectsUiState.Success(emptyList())
-                    } else {
-                        Log.d(TAG, "Projects loaded successfully")
-                        projects.forEach { project ->
-                            Log.d(TAG, "Project: ${project.title}, Preview URL: ${project.previewImageUrl}")
-                        }
-                        _uiState.value = ProjectsUiState.Success(projects)
+            try {
+                repository.getProjects()
+                    .catch { error ->
+                        Log.e(TAG, "Error in projects flow: ${error.message}", error)
+                        _uiState.value = ProjectsUiState.Error(error.message ?: "Unknown error")
                     }
-                }
+                    .collect { projects ->
+                        Log.d(TAG, "Received ${projects.size} projects")
+                        if (projects.isEmpty()) {
+                            _uiState.value = ProjectsUiState.Error("No projects found")
+                        } else {
+                            _uiState.value = ProjectsUiState.Success(projects)
+                        }
+                    }
+            } catch (e: Exception) {
+                Log.e(TAG, "Unexpected error loading projects: ${e.message}", e)
+                _uiState.value = ProjectsUiState.Error(e.message ?: "Unknown error")
+            }
         }
+    }
+
+    fun refreshProjects() {
+        Log.d(TAG, "Refreshing projects")
+        _uiState.value = ProjectsUiState.Loading
+        loadProjects()
     }
 
     fun getProject(id: String) {
@@ -57,7 +60,6 @@ class ProjectsViewModel @Inject constructor(
                 val project = repository.getProject(id)
                 if (project != null) {
                     Log.d(TAG, "Successfully fetched project: ${project.title}")
-                    Log.d(TAG, "Preview image URL: ${project.previewImageUrl}")
                     _uiState.value = ProjectsUiState.Success(listOf(project))
                 } else {
                     Log.w(TAG, "Project not found with ID: $id")

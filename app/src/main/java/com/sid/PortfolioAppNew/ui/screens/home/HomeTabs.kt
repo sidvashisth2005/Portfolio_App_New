@@ -1,6 +1,8 @@
 package com.sid.PortfolioAppNew.ui.screens.home
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,9 +18,88 @@ import com.airbnb.lottie.compose.*
 import com.sid.PortfolioAppNew.R
 import com.sid.PortfolioAppNew.ui.components.*
 import com.sid.PortfolioAppNew.ui.theme.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
+import com.sid.PortfolioAppNew.ui.theme.Icons
 import java.util.*
+
+@Composable
+fun HomeTabs() {
+    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf("Overview", "Projects", "Skills", "Timeline")
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF121212))
+    ) {
+        // Tab bar
+        TabRow(
+            selectedTabIndex = selectedTab,
+            containerColor = Color(0xFF1E1E1E),
+            contentColor = Color.White
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTab == index,
+                    onClick = { selectedTab = index },
+                    text = {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                )
+            }
+        }
+
+        // Tab content
+        when (selectedTab) {
+            0 -> OverviewTab()
+            1 -> ProjectsTab()
+            2 -> SkillsTab()
+            3 -> TimelineTab()
+        }
+    }
+}
+
+@Composable
+private fun OverviewTab() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // GitHub activity
+        CyberpunkCard(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "GitHub Activity",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CyberpunkLottieAnimation(
+                    modifier = Modifier.size(200.dp),
+                    lottieResId = Icons.githubPlaceholder
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProjectsTab() {
+    // Projects tab content
+}
+
+@Composable
+private fun SkillsTab() {
+    // Skills tab content
+}
 
 @Composable
 fun TimelineTab() {

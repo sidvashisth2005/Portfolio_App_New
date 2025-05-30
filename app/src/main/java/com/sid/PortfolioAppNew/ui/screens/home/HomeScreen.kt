@@ -24,9 +24,10 @@ fun HomeScreen() {
             containerColor = DarkBackground,
             contentColor = Primary,
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
+                TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                    color = Primary
+                    height = 4.dp,
+                    color = NeonBlue
                 )
             }
         ) {

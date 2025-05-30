@@ -32,16 +32,7 @@ class FirestoreService @Inject constructor(
                     val projects = snapshot?.documents?.mapNotNull { doc ->
                         try {
                             Log.d(TAG, "Processing document: ${doc.id}")
-                            val data = doc.data
-                            Log.d(TAG, "Document data: $data")
-                            
-                            val project = doc.toObject(Project::class.java)?.copy(id = doc.id)
-                            if (project != null) {
-                                Log.d(TAG, "Project loaded: ${project.title}")
-                                Log.d(TAG, "Preview image URL: ${project.previewImageUrl}")
-                                Log.d(TAG, "Images list: ${project.images}")
-                            }
-                            project
+                            doc.toObject(Project::class.java)?.copy(id = doc.id)
                         } catch (e: Exception) {
                             Log.e(TAG, "Error converting document ${doc.id}: ${e.message}", e)
                             null
@@ -52,9 +43,6 @@ class FirestoreService @Inject constructor(
                         Log.w(TAG, "No projects found in Firestore")
                     } else {
                         Log.d(TAG, "Successfully fetched ${projects.size} projects")
-                        projects.forEach { project ->
-                            Log.d(TAG, "Project: ${project.title}, Preview URL: ${project.previewImageUrl}")
-                        }
                     }
                     trySend(projects)
                 } catch (e: Exception) {
@@ -76,8 +64,6 @@ class FirestoreService @Inject constructor(
             val project = doc.toObject(Project::class.java)?.copy(id = doc.id)
             if (project != null) {
                 Log.d(TAG, "Successfully fetched project: ${project.title}")
-                Log.d(TAG, "Preview image URL: ${project.previewImageUrl}")
-                Log.d(TAG, "Images list: ${project.images}")
             } else {
                 Log.w(TAG, "Project not found with ID: $id")
             }

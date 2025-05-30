@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -102,7 +103,7 @@ fun NeonProgressBar(
     modifier: Modifier = Modifier
 ) {
     LinearProgressIndicator(
-        progress = progress,
+        progress = { progress },
         modifier = modifier,
         color = NeonPrimary,
         trackColor = DarkSurface
@@ -113,9 +114,10 @@ fun NeonProgressBar(
 fun NeonDivider(
     modifier: Modifier = Modifier
 ) {
-    Divider(
-        modifier = modifier,
-        color = NeonPrimary.copy(alpha = 0.3f)
+    HorizontalDivider(
+        modifier = Modifier.fillMaxWidth(),
+        thickness = 1.dp,
+        color = Color.White.copy(alpha = 0.1f)
     )
 }
 
@@ -164,7 +166,7 @@ fun NeonTopAppBar(
             if (showBackButton) {
                 IconButton(onClick = { onNavigateBack?.invoke() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back"
                     )
                 }

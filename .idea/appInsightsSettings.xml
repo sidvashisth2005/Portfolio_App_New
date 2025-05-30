@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.sid.PortfolioAppNew" />
-                  <option name="mobileSdkAppId" value="1:637343022920:android:31195c322fb74a991d7d7d" />
-                  <option name="projectId" value="portfolioapp-e0c18" />
-                  <option name="projectNumber" value="637343022920" />
+                  <option name="mobileSdkAppId" value="1:000000000000:android:0000000000000000" />
+                  <option name="projectId" value="portfolio-app-new" />
+                  <option name="projectNumber" value="000000000000" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
