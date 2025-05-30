@@ -15,6 +15,7 @@ data class Project(
     val colorPalette: ProjectColorPalette = ProjectColorPalette.OTHER
 )
 
+
 enum class ProjectColorPalette {
     ANDROID,
     WEB,
